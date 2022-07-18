@@ -34,6 +34,9 @@ class Convert:
     def set_num(self, value: str) -> None:
         self.num = value
 
+    def get_base(self) -> None:
+        return self.base 
+
     def set_new_base(self, value: int) -> None:
         self.base = value
 
@@ -53,12 +56,10 @@ class ConvertToSymbol(Convert):
     
     def convert(self) -> None:
         number = self.get_old_num()
-        old_base = self.get_old_base()
-        base = self.current_base
+        base = self.get_base()
         dictionary = self.get_dictionary()
         self.set_basic_dictionary(dictionary[0 : base])
         my_dictionary = self.get_basic_dictionary()
-        print(my_dictionary)
         symbol = ''
         temporal_number = number
         while temporal_number >= base:
