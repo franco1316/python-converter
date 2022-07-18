@@ -1,3 +1,4 @@
+import math
 import random
 from colors import Colors
 
@@ -79,8 +80,59 @@ class ConvertToSymbol(Convert):
 
 class ConvertToNumber(Convert):
 
-    def __init__(self, num: int, current_base: int) -> None:
-        super().__init__(num, current_base)
+    def __init__(self, num: int, old_base: int, current_base: int) -> None:
+        if old_base>current_base:
+            super().__init__(num, old_base)
+            self.current_base = current_base
+        else: 
+            raise ValueError('The new base must be between the 2 - 10')
+
+    def convert(self) -> None:
+        symbol = str(super().get_old_num())
+        base = self.base
+        new_base = self.current_base
+        dictionary = self.get_dictionary()
+        self.set_basic_dictionary(dictionary[0 : base])
+        my_dictionary = self.get_basic_dictionary()
+        new_dictionary = self.get_basic_dictionary()[0 : new_base]
+        num = self.__x_to_10(symbol, base, my_dictionary)
+        new_num = self.__10_to_y(num, new_base, new_dictionary)
+        self.set_num(new_num)
+        super().set_old_base(self.base)
+        super().set_new_base(self.current_base)
+
+    def __x_to_10(self, num: str, base: int, dictionary: str) -> int:
+        num = num[::-1]
+        index = 0
+        number = 0
+        sum = 0
+        aditional = 0
+        while index < len(num):
+            symbol = num[index]
+            index_dictionary = dictionary.find(symbol)
+            if index_dictionary > 9:
+                rest = index_dictionary % 10
+                aditional = index_dictionary - rest
+                index_dictionary = rest + aditional
+            number = int(index_dictionary) * int((math.pow(base, index)))#i*n(i)
+            sum += number 
+            print(f'{base}(e{index}) = {int((math.pow(base, index)))} * number = {index_dictionary} = {number}')
+            index += 1
+
+        return sum
+
+    def __10_to_y(self, num: int, new_base: int, new_dictionary: str) -> int:
+        number = ''
+        temporal_number = num
+        while temporal_number >= new_base:
+            rest = temporal_number % new_base
+            temporal_number //= new_base
+            number += new_dictionary[rest]
+        number += new_dictionary[temporal_number]
+        number = number[::-1]
+    
+        return number
+        
 
     def __str__(self) -> str:
         return super().__str__()
@@ -91,4 +143,3 @@ class Random():
         self.old_base = random.randint(2, 36)
         self.new_base = random.randint(2, 36)
         self.number = random.randint(0, 80)
-        
