@@ -280,3 +280,12 @@ class MyClass:
 book = MyClass('My title', 'Enjoy it reading me')
 print(book.get_all()) #book is function as an instance of my superclass
 print(book)
+
+space()
+
+#finally look this
+numbers = [0,1,2,3,4,5,6,7,8,9]
+square_numbers = list(map(lambda x: x**2, numbers))
+
+print(numbers)
+print(square_numbers)
