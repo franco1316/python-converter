@@ -32,6 +32,9 @@ class Convert:
     def set_old_base(self, value: int) -> None:
         self.__old_base = value
 
+    def get_number(self) -> int:
+        return self.num
+
     def set_num(self, value: str) -> None:
         self.num = value
 
@@ -44,7 +47,7 @@ class Convert:
     def __str__(self) -> str:
         my_colors = Colors()
         return (f'{my_colors.GREEN}{self.__old_num}{my_colors.MAGENTA}({self.__old_base}){my_colors.DEFAULT} => '
-        f'{my_colors.GREEN}{self.num}{my_colors.MAGENTA}({self.base}){my_colors.DEFAULT}\n')
+        f'{my_colors.GREEN}{self.num}{my_colors.MAGENTA}({self.base}){my_colors.DEFAULT}')
 
         
 
@@ -70,6 +73,12 @@ class ConvertToSymbol(Convert):
         symbol += my_dictionary[temporal_number]
         symbol = symbol[::-1]
         self.set_num(symbol)
+
+    def get_number(self):
+        return self.get_old_num()
+
+    def get_symbol(self):
+        return self.num
 
 
     def __str__(self) -> str:
@@ -132,6 +141,13 @@ class ConvertToNumber(Convert):
         number = number[::-1]
     
         return number
+
+    
+    def get_symbol(self):
+        return super().get_old_num()
+
+    def get_number(self):
+        return super().get_number()
         
 
     def __str__(self) -> str:
