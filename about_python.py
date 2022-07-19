@@ -168,3 +168,115 @@ print('line 166', dict_within_years)
 #! Switch and do-while statements doesn't exist here
 #* Ive got lazy but; normally i create a show function(line, color, message) to avoid repeat at myself in the print
 #? To run in the terminal, press cntrl + j and write the script python about_python.py only if you have python installed previously
+
+def space(max: int = 5):
+    i = 0
+    while i < max:
+        print()
+        i += 1
+
+space()
+
+#decorators
+
+def function_a(function_b):
+    def function_C():
+        print('********** Decorator start **********')
+        function_b()
+        print('********** Decorator end **********')
+    return function_C()
+
+@function_a
+def my_function():
+    print('Whatever you want')
+
+space()
+
+# Basically I put my function as function_b in function a and function_b calls in the middle of another function called from function_a
+
+#need the attribute exist to use get, set or delete decorators
+class Decor:
+
+    def __init__(self) -> None:
+        self.__something = 'Something'
+        self.__another = 'Another'
+
+    @property
+    def something(self):
+        return self.__something
+
+    def get_another_thing(self):
+        return self.__another
+
+    @something.setter
+    def something(self, value: str):
+        self.__something = value
+
+   
+    def set_another_thing(self, value: str):
+        self.__another = value
+    # Look the difference between them
+
+decor = Decor()
+
+print(decor.something)
+print(decor.get_another_thing()) #function
+
+decor.something = 'Something and more'
+decor.set_another_thing('Another thing')
+
+print(decor.something) #attribute
+print(decor.get_another_thing()) #function
+
+space(2)
+
+#also you can't use the @property.setter of the father class in the son class
+
+#*next level decorating function with a class
+
+class SquareDecorator:
+ 
+    def __init__(self, function):
+        self.function = function
+ 
+    def __call__(self, *args, **kwargs):
+ 
+        # before function
+        result = self.function(*args, **kwargs)
+ 
+        # after function
+        return result
+ 
+ # adding class decorator to the function
+@SquareDecorator
+def get_square(n):
+    print("Given number is:", n)
+    return n * n
+ 
+print("Square of number is:", get_square(195))
+
+space(3)
+
+#*next level decorating class with another class
+
+def my_decorator():
+    def super_class(cls):#cls is equal to self but use in a class method for convencion
+        class SuperClass(cls):
+            def get_all(self):
+                return f'{self.title}: {self.description}'
+
+            def __str__(self) -> str:
+                return f'{self.title}\n{self.description}'
+        return SuperClass
+    return super_class
+
+
+@my_decorator()#here we've a function
+class MyClass:
+    def __init__(self, title: str, description: str) -> None:
+        self.title = title
+        self.description = description
+
+book = MyClass('My title', 'Enjoy it reading me')
+print(book.get_all()) #book is function as an instance of my superclass
+print(book)
