@@ -116,7 +116,7 @@ class ConvertToNumber(Convert):
                 index_dictionary = rest + aditional
             number = int(index_dictionary) * int((math.pow(base, index)))#i*n(i)
             sum += number 
-            print(f'{base}(e{index}) = {int((math.pow(base, index)))} * number = {index_dictionary} = {number}')
+            # print(f'{base}(e{index}) = {int((math.pow(base, index)))} * number = {index_dictionary} = {number}')
             index += 1
 
         return sum
