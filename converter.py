@@ -3,42 +3,51 @@ import random
 from colors import Colors
 
 class Convert:
-    def __init__(self, num: int, old_base: int) -> None:
+    def __init__(self, num: int, new_base: int) -> None:
         self.__old_num = num
         self.__old_base = 10
         self.__DICTIONARY = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.__basic_dictionary = '0123456789'
         self.num = 0
-        self.base = old_base
+        self.base = new_base
 
-    def get_dictionary(self) -> str:
+    @property
+    def dictionary(self) -> str:
         return self.__DICTIONARY
 
-    def get_basic_dictionary(self) -> str:
+    @property
+    def basic_dictionary(self) -> str:
         return self.__basic_dictionary
 
-    def set_basic_dictionary(self, value: str) -> None:
+    @basic_dictionary.setter
+    def basic_dictionary(self, value: str) -> None:
         self.__basic_dictionary = value
 
-    def get_old_num(self) -> str:
+    @property
+    def old_num(self) -> str:
         return self.__old_num
 
-    def set_old_number(self, value: str) -> None:
+    @old_num.setter
+    def old_number(self, value: str) -> None:
         self.__old_num = value
 
-    def get_old_base(self) -> int:
+    @property
+    def old_base(self) -> int:
         return self.__old_base
 
     def set_old_base(self, value: int) -> None:
         self.__old_base = value
 
-    def get_number(self) -> int:
+    @property
+    def number(self) -> int:
         return self.num
 
-    def set_num(self, value: str) -> None:
+    @number.setter
+    def number(self, value: str) -> None:
         self.num = value
 
-    def get_base(self) -> None:
+    @property
+    def new_base(self) -> int:
         return self.base 
 
     def set_new_base(self, value: int) -> None:
@@ -59,11 +68,11 @@ class ConvertToSymbol(Convert):
 
     
     def convert(self) -> None:
-        number = self.get_old_num()
-        base = self.get_base()
-        dictionary = self.get_dictionary()
-        self.set_basic_dictionary(dictionary[0 : base])
-        my_dictionary = self.get_basic_dictionary()
+        number = self.old_num
+        base = self.new_base
+        dictionary = self.dictionary
+        self.basic_dictionary = dictionary[0 : base]
+        my_dictionary = self.basic_dictionary
         symbol = ''
         temporal_number = number
         while temporal_number >= base:
@@ -72,12 +81,14 @@ class ConvertToSymbol(Convert):
             symbol += my_dictionary[rest]
         symbol += my_dictionary[temporal_number]
         symbol = symbol[::-1]
-        self.set_num(symbol)
+        self.num = symbol
 
-    def get_number(self):
-        return self.get_old_num()
+    @property
+    def number(self):
+        return self.old_num
 
-    def get_symbol(self):
+    @property
+    def symbol(self):
         return self.num
 
 
@@ -90,24 +101,24 @@ class ConvertToSymbol(Convert):
 class ConvertToNumber(Convert):
 
     def __init__(self, num: int, old_base: int, current_base: int) -> None:
-        if old_base>current_base:
+        if old_base > current_base:
             super().__init__(num, old_base)
             self.current_base = current_base
         else: 
             raise ValueError('The new base must be between the 2 - 10')
 
     def convert(self) -> None:
-        symbol = str(super().get_old_num())
-        base = self.base
+        symbol = str(super().old_num)
+        base = self.new_base
         new_base = self.current_base
-        dictionary = self.get_dictionary()
-        self.set_basic_dictionary(dictionary[0 : base])
-        my_dictionary = self.get_basic_dictionary()
-        new_dictionary = self.get_basic_dictionary()[0 : new_base]
+        dictionary = self.dictionary
+        self.basic_dictionary = dictionary[0 : base]
+        my_dictionary = self.basic_dictionary
+        new_dictionary = self.basic_dictionary[0 : new_base]
         num = self.__x_to_10(symbol, base, my_dictionary)
         new_num = self.__10_to_y(num, new_base, new_dictionary)
-        self.set_num(new_num)
-        super().set_old_base(self.base)
+        self.num = new_num
+        super().set_old_base(self.new_base)
         super().set_new_base(self.current_base)
 
     def __x_to_10(self, num: str, base: int, dictionary: str) -> int:
@@ -142,12 +153,13 @@ class ConvertToNumber(Convert):
     
         return number
 
-    
-    def get_symbol(self):
-        return super().get_old_num()
+    @property
+    def symbol(self):
+        return super().old_num
 
-    def get_number(self):
-        return super().get_number()
+    @property
+    def number(self):
+        return super().number
         
 
     def __str__(self) -> str:
@@ -157,5 +169,5 @@ class ConvertToNumber(Convert):
 class Random():
     def __init__(self) -> None:
         self.old_base = random.randint(2, 36)
-        self.new_base = random.randint(2, 36)
+        self.new_base = random.randint(2, 10)
         self.number = random.randint(0, 80)
