@@ -9,7 +9,6 @@ print(symbol_1)
 # print(symbol_1.number)
 # print(symbol_1.symbol)
 
-#convert to number old base > new_base
 try:
     number_1 = ConvertToNumber(symbol_1.num, symbol_1.new_base, symbol_1.current_base)
 except ValueError:
