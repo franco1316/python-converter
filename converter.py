@@ -101,11 +101,10 @@ class ConvertToSymbol(Convert):
 class ConvertToNumber(Convert):
 
     def __init__(self, num: int, old_base: int, current_base: int) -> None:
-        if old_base > current_base:
             super().__init__(num, old_base)
             self.current_base = current_base
-        else: 
-            raise ValueError('The new base must be between the 2 - 10')
+            # self.bx_to_10 = function
+            # self.b10_to_y = function
 
     def convert(self) -> None:
         symbol = str(super().old_num)
@@ -120,6 +119,14 @@ class ConvertToNumber(Convert):
         self.num = new_num
         super().set_old_base(self.new_base)
         super().set_new_base(self.current_base)
+
+    @property
+    def bx_to_10(self):
+        return self.__x_to_10
+
+    @property
+    def b10_to_y(self):
+        return self.__10_to_y
 
     def __x_to_10(self, num: str, base: int, dictionary: str) -> int:
         num = num[::-1]
@@ -171,3 +178,18 @@ class Random():
         self.old_base = random.randint(2, 36)
         self.new_base = random.randint(2, 10)
         self.number = random.randint(0, 80)
+        self.__DICTIONARY = '0123456789'
+        #Its impossible hava a letter got in count how is the process to new number is created
+        while self.__check_valid_number(self.number, self.old_base, self.__DICTIONARY):
+            self.number = random.randint(0, 80)
+
+    def __check_valid_number(self, number: int or str, base: int, dictionary: str) -> bool:
+        num = str(number) #assert that I've a string
+        index = 0
+        while index < len(num):
+            cipher = num[index]
+            index_cipher = dictionary.find(cipher)
+            if index_cipher >= base:
+                return True
+            index += 1
+        return False
